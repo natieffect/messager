@@ -1,7 +1,4 @@
-
-
 from .models import Account,Myclient,CITY,GENDER
-from django.contrib import messages
 from django.contrib.auth.hashers import make_password, check_password
 from script import client_session
 class ClientHandler:

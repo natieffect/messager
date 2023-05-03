@@ -3,7 +3,7 @@ from django.shortcuts import redirect
 def is_loged_in(function):
     def wrap(request, *args, **kwargs):
         if request.session.get('account_email',False):
-            return redirect('sent:home')      
+            return redirect('chat:homepage')      
         else:
             return function(request, *args, **kwargs)
     return wrap

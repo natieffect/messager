@@ -1,0 +1,303 @@
+{%extends 'main_index.html'%}
+{%load static%}
+{%block index%}
+{% include 'includes/main_slick.html'%}
+<title>Message Home</title>
+<style>
+  .display_card{
+      margin: 10px 10px 0px 10px;
+  }
+  .btn_message_edit{
+    margin: 0px 7px 7px 0px;
+  }
+</style>
+</head>
+<body>
+{% include 'navbar/home_navbar.html'%}
+{% include 'container/top_container.html'%}
+<div class="container">
+ <div class="row">
+<div class="col"></div>
+<div class="col-md-5 bg ">
+    <div class="col">
+      {%if list_val%} 
+        <div class="your-class">
+              {%for val in list_val%}
+                  <div class="container-fluid"> 
+                    <div class="row">
+                      <div class="col-sm-1">
+                          <img src="{%static 'img/user.png'%}" width="50px" height="50px" alt="" srcset="">
+                      </div>
+                      <div class="col">
+                                <form action="" method="post" onclick="this.submit();">{%csrf_token%}
+                                  <input type="hidden" name="sendto" value="{{val.id}}">
+                                  <input type="hidden" name="action" value="listmessage">
+                                  <div class="" style="width: 18rem;">
+                                    <div class="card-body">
+                                      {%if val.user.email == request.session.account_email%}
+                                      <h5 class="card-title">You</h5>
+                                      {%else%}
+                                      <h5 class="card-title">{{val.user.first_name}} {{val.user.middle_name}} {{val.user.last_name}}</h5>
+                                      {%endif%}
+                                      
+                                      <div style="height: 40px; overflow: hidden;">
+                                        <p class="card-text"><small class="text-body-secondary">Last active 3 mins ago</small></p>
+                                      </div>
+                                    </div>
+                                  </div>
+                               </form>
+                      </div>
+                      <div class="col">
+    
+                      </div>
+                    </div>
+                  </div>
+              {%endfor%}
+        </div>
+      {%else%}  
+      <nav class="navbar bg-body-tertiary">
+        <div class="container-fluid">
+          <small> 
+            <img src="{%static 'img/user.png'%}" alt="Logo" width="30" height="30" class="d-inline-block align-text-top ">  {{resiver.user.first_name}}
+          </small>
+          
+          <a class="navbar-brand text-body-dark" href="{%url 'chat:homepage'%}">
+            <img src="{%static 'img/backspace.png'%}" alt="Logo" width="30" height="24" class="d-inline-block align-text-top "> 
+          </a>
+        </div>
+      </nav>
+        {%if messagefound%}
+
+          <div class="your-class">
+              {%for val in message_all%}
+                <div class="container" id="container{{val.id}}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample{{val.id}}" aria-expanded="false" aria-controls="collapseExample">
+                  <div class="row">
+                      <div class="col">
+                        <div class="card display_card" style="width: 18rem;" >
+                          <nav class="navbar bg-body-tertiary card-header ">
+                            <div class="container-fluid">
+                              {%if val.send_from.user.email == request.session.account_email%}
+                              <small class="text-body-secondary text-start">From:YOU</small> 
+                              {%else%}
+                              <small class="text-body-secondary text-start">From: {{val.send_from.user.first_name}} {{val.send_from.user.middle_name}} </small> 
+                              {%endif%}
+                              <div class="d-flex" role="search">
+                                <img src="{%static 'img/messeger.png'%}" width="20px" height="20px" alt="" srcset="">
+                              </div>
+                            </div>
+                          </nav>
+                          <div class="card-body">
+                            <p class="card-text" id="detail{{val.id}}"> {{ val.detail}}</p>
+                            <p class="card-text text-end"><small class="text-body-secondary">{{ val.pub_date}}</small></p>
+                            
+                          </div>
+                          </div>
+                        </div>
+                        {%if val.send_from.user.email == request.session.account_email%}
+                        <div class="col bg-light card display_card collapse"  id="collapseExample{{val.id}}">
+                          <div class="row">
+                            <p class="card-text text-start"><small class="text-body-secondary"> message</small></p>
+                          </div>
+                          <div class="row">
+                            <button class="btn btn-sm btn-secondary btn_message_edit" id="editbtn{{val.id}}" data-bs-toggle="collapse" data-bs-target="#editPost{{val.id}}" aria-expanded="false" aria-controls="collapseExample" aria-expanded="false" aria-controls="collapseExample">Edit</button>
+                          </div>
+                          <div class="row">
+                            <button class="btn btn-sm btn-secondary btn_message_edit" id="{{val.id}}" >Delete</button>
+                          </div>
+                        </div>
+                        <div class="row display_card collapse" id="editPost{{val.id}}">
+                          <div class="col " style="width: 18rem;">
+                            <form action="" method="post" id="editform{{val.id}}" class="editpostform"> {%csrf_token%}
+                                <input type="hidden" name="action" id="action{{val.id}}" value="updatemessage">
+                                <input type="hidden" name="editid" id="editid{{val.id}}" value="{{val.id}}">
+                                <div class="container-fluid">
+                                <div class="row">
+                                <div class="col">
+                                  <textarea name="detail"  class="form-control"  cols="30" rows="3"  placeholder="new message" required></textarea>
+                                </div>      
+                                <div class="col-md-2">
+                                  <input type="submit" class="btn btn-secondary btn-sm" value="Finish" >  
+                                </div> 
+                                </div>
+                                </div>
+                            </form>
+                          </div>
+    
+                        </div>
+                        {%endif%}
+                    </div>
+                    
+
+
+                </div>
+              {%endfor%}
+          </div>
+        {%else%}
+             {% include 'chat/chat_nomessage.html'%}
+        {%endif%}
+             <nav class="navbar">
+              <form action="" method="post"> {%csrf_token%}
+                    <input type="hidden" name="action" id="action" value="sendmessage">
+                    <input type="hidden" name="sendto" id="sendto" value="{{request.POST.sendto}}">
+                    <div class="container-fluid">
+                    <div class="row">
+                      <div class="col">
+                        <textarea name="detail" id='detail' class="form-control"  cols="30" rows="3" placeholder="new message"  required></textarea>
+                      </div>      
+                      <div class="col-md-2">
+                        <input type="submit" class="btn btn-secondary btn-md" value="Send" id="sendbtn">  
+                      </div>
+                        
+                    </div>
+                    </div>
+              </form>
+             </nav>
+      {%endif%}
+    </div> 
+</div>
+<div class="col"> </div>
+</div>
+</div>
+{% include 'container/floor_container.html'%}
+<script type="text/javascript">
+  $(function()
+  {
+      const $slider= $('.your-class')
+      $slider.on('init', () => {mouseWheel($slider)}).slick({
+                                                              infinite: false,
+                                                              slidesToShow: 4,
+                                                              slidesToScroll: 3,
+                                                              vertical:true,
+                                                              initialSlide:0,
+                                                            })
+
+    function mouseWheel($slider) {
+	        $(window).on('wheel', { $slider: $slider }, mouseWheelHandler)
+        }
+
+    function mouseWheelHandler(event) {
+	    event.preventDefault()
+	    const $slider = event.data.$slider
+	    const delta = event.originalEvent.deltaY
+	    if(delta > 0) {
+		    $slider.slick('slickPrev')
+	    }
+	    else {
+		    $slider.slick('slickNext')
+	    }
+      }
+
+    function getCookie(name) {
+    let cookie = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+    return cookie ? cookie[2] : null;
+}
+
+    $("button").click(function(e) {
+      e.preventDefault()
+      const data = new FormData()
+      data.append('deleteid', this.id)
+      fetch('http://localhost:7000/chat/delete/',{
+      method:'post',
+      headers: {"X-CSRFToken": getCookie("csrftoken"), },
+      body:data}).then((res)=>{
+                  return res.json()
+                  }).then(data=>{
+                      $(`#container${this.id}`).hide()
+                  }).catch(err=>{
+                      alert(`Error: ${err}`, 'message send error')
+                  });
+});
+
+    $("#sendbtn").click(function(e){
+    e.preventDefault()
+    const detail = $('#detail').val()
+    const sender = "{{request.session.account_email}}"
+    const resiver = $('#sendto').val()
+    const data = new FormData();
+    data.append('detail', detail);
+    data.append('sender', sender);
+    data.append('sendto', resiver);
+    data.append('action', "sendmessage");
+
+    fetch('.', {
+        method: 'post',
+        headers: {
+            "X-CSRFToken": getCookie("csrftoken"),
+        },
+        body: data
+        }).then((res) => {return res.json()}).then(json => {
+                  const detail = json.detail
+                  const firstName = json.firstName
+                  const lastName = json.lastName
+                  const pubDate = json.pubDate
+                  const iD = json.iD
+                  $slider.slick('slickAdd',
+                  `<div class="container" id="container${iD}" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample${iD}" aria-expanded="false" aria-controls="collapseExample">
+                  <div class="row">
+                      <div class="col">
+                        <div class="card display_card" style="width: 18rem;" >
+                          <nav class="navbar bg-body-tertiary card-header ">
+                            <div class="container-fluid">
+                              <small class="text-body-secondary text-start">From: ${firstName} ${lastName}  </small> 
+                              <div class="d-flex" role="search">
+                                <img src="{%static 'img/messeger.png'%}" width="20px" height="20px" alt="" srcset="">
+                              </div>
+                            </div>
+                          </nav>
+                          <div class="card-body">
+                            <p class="card-text"> ${detail}</p>
+                            <p class="card-text text-end"><small class="text-body-secondary">${pubDate}</small></p>
+                            
+                          </div>
+                          </div>
+                        </div>
+                        <div class="col bg-light card display_card collapse"  id="collapseExample${iD}">
+                          <div class="row">
+                            <p class="card-text text-start"><small class="text-body-secondary"> message</small></p>
+                          </div>
+                          <div class="row">
+                            <button class="btn btn-sm btn-secondary btn_message_edit">Edit</button>
+                          </div>
+                          <div class="row">
+                            <button class="btn btn-sm btn-secondary btn_message_edit" id="${iD}"  >Delete</button>
+                          </div>
+                        </div>
+                    </div> </div> `
+                  );
+                  window.location.reload(true);
+
+        }).catch(err => {
+             alert(`Error: ${err}`, 'danger')
+        });
+      });
+  
+    $(".editpostform").on('submit',function(e){
+      e.preventDefault() 
+        // Get all the forms elements and their values in one step
+        inputs={};
+        input_serialized =  $(this).serializeArray();
+        input_serialized.forEach(field => {
+        inputs[field.name] = field.value;
+        })
+      //  alert(inputs.detail)
+
+      const data = new FormData()
+      data.append('action', inputs.action)
+      data.append('editid', inputs.postid)
+      data.append('detail', inputs.detail)
+      fetch('http://localhost:7000/chat/update/',{
+      method:'post',
+      headers: {"X-CSRFToken": getCookie("csrftoken"), },
+      body:data}).then((res)=>{
+                     return res.json()
+                  }).then(data=>{
+                       $(`#detail${inputs.editid}`).html(inputs.detail)     
+                  }).catch(err=>{
+                       alert(`Error: ${err}`, 'message send error')
+                  });  
+    })
+  
+  });
+</script>
+{%endblock%}
+
