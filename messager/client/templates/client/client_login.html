@@ -1,0 +1,44 @@
+{%extends 'main_index.html'%}
+{%load static%}
+{%block index%}
+<title>User Login</title>
+<style>
+    #loginform{
+        padding-top: 250px;
+    }
+</style>
+</head>
+<body>
+{% include 'navbar/main_navbar.html'%}
+{% include 'container/top_container.html'%}
+<div class="col ">
+    <div id="loginform">
+        <center class="">
+            <form action="" method="post"> {%csrf_token%}
+                <div class="" style="width: 40rem;">
+                <div class="row mb-3">
+                    <label for="email" class="col-sm-2 col-form-label">Email</label>
+                    <div class="col-sm-7">
+                    <input type="email" class="form-control" id="email" name="email" value="{{request.POST.email}}" required>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="middle_name" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-7">
+                    <input type="password" class="form-control" id="middle_name" name="password" required>
+                    </div>
+                </div>
+                <div class="">
+                    {% include 'button/main_btn_center.html'%} 
+                </div>
+            </form>
+        </div>
+        </center>
+        <a class="icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" href="{% url 'client:signup'%}">
+            Sign up
+          </a>
+    </div>
+ 
+</div>
+{% include 'container/floor_container.html'%}
+{%endblock%}

@@ -1,0 +1,124 @@
+{%extends 'main_index.html'%}
+{%load static%}
+{%block index%}
+{% include 'includes/main_slick.html'%}
+<title>Registor User</title>
+<style>
+  label{
+    font-family: 'Courier New', Courier, monospace;
+  }
+</style>
+</head>
+<body>
+{% include 'navbar/main_navbar.html'%}
+{% include 'container/top_container.html'%}
+<div class="col">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+        <div class="container-md">
+          <label for="" class="navbar-brand " id="title_detail" > Registor User</label>
+        </div>
+    </nav><br>
+    {% include 'container/top_container.html'%}
+    <div class="col">
+        <form action="" method="post" >{%csrf_token%}
+          <div>
+              {%include 'collapse/top_collapse.html'%}           
+                    <div class="row mb-3">
+                      <label for="email" class="col-sm-2 col-form-label">Email</label>
+                      <div class="col-sm-7">
+                        <input type="email" class="form-control" id="email" name="email" value="{{request.POST.email}}" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="first_name" class="col-sm-2 col-form-label">First Name</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="first_name" name="first_name" value="{{request.POST.first_name  }}" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="middle_name" class="col-sm-2 col-form-label">Middle Name</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="middle_name" name="middle_name"  value="{{request.POST.middle_name}}" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="last_name" class="col-sm-2 col-form-label">Last Name</label>
+                      <div class="col-sm-7">
+                        <input type="text" class="form-control" id="last_name" name="last_name" value="{{request.POST.last_name}}" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="last_name" class="col-sm-2 col-form-label">Phone</label>
+                      <div class="col-sm-7">
+                        <input type="number" class="form-control" id="phone" name="phone" value="{{request.POST.phone}}" required>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="last_name" class="col-sm-2 col-form-label">Other Phone</label>
+                      <div class="col-sm-7">
+                        <input type="number" class="form-control" id="phoneb" name="phoneb" value="{{request.POST.phoneb}}" required>
+                      </div>
+                    </div>
+  
+                    <div class="row mb-3">
+                      <label for="coutry" class="col-sm-2 col-form-label">Sex</label>
+                      <div class="col-sm-7">
+                          <select class="form-select" aria-label="Default select example" id="gender" name="gender"  required>
+                              {%for val in gender%}
+                                {%if val.value == request.POST.gender%}
+                                  <option value="{{val.value}}" selected>{{val.name}}</option>
+                                {%else%}
+                                  <option value="{{val.value}}">{{val.name}}</option>
+                                {%endif%}
+                              {%endfor%}
+                            </select>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label for="coutry" class="col-sm-2 col-form-label">Country</label>
+                      <div class="col-sm-7">
+                          <select class="form-select" aria-label="Default select example" id="coutry" name="coutry"  required>
+                              {%for val in city%}
+                                {%if val.value == request.POST.coutry%}
+                                  <option value="{{val.value}}" selected>{{val.name}}</option>
+                                {%else%}
+                                  <option value="{{val.value}}">{{val.name}}</option>
+                                {%endif%}
+                              {%endfor%}
+                            </select>
+                      </div>
+                    </div>
+                  {%include 'collapse/floor_collapse.html'%}
+          </div>
+              {%if not success%}
+                 <input type="hidden" name="registor" value="detail" >
+              {%else%}    
+                  <nav class="navbar navbar-expand-lg bg-body-tertiary ">
+                  <div class="container-md">
+                  <label for="" class="navbar-brand " id="title_detail" > Account password</label>
+                  </div>
+                  </nav><br>
+                  <input type="hidden" name="registor" value="account" >    
+                  <div class="row mb-3">
+                    <label for="middle_name" class="col-sm-2 col-form-label">Password</label>
+                    <div class="col-sm-7">
+                      <input type="password" class="form-control" id="middle_name" name="password" required>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="middle_name" class="col-sm-2 col-form-label">Conform Password</label>
+                    <div class="col-sm-7">
+                      <input type="password" class="form-control" id="middle_name" name="passwordcon" required>
+                    </div>
+                  </div>
+              {%endif%}
+              <div class="col-sm-10">
+                {% include 'button/main_btn_center.html'%}
+              </div>
+        </form>
+    </div>
+    {% include 'container/floor_container.html'%}
+</div>
+{% include 'container/floor_container.html'%}
+
+{%endblock%}
