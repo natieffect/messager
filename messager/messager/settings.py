@@ -9,9 +9,12 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+from configparser import ConfigParser
 from pathlib import Path
 import os
+
+config = ConfigParser()
+config.read('/home/nat/Code/Project/Django/python_3.7.3_local/Git_hosted/messager/config/messager_config.cfg')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-m=*-vazml#3n*p^5f+@_mdw54xsl87ehut2ib_&+8fn2ir7nj='
+SECRET_KEY = config.get('SECRET_KEY', 'KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -77,14 +80,14 @@ WSGI_APPLICATION = 'messager.wsgi.application'
 DATABASES = {
     'default': 
             {
-                'ENGINE': 'django.db.backends.mysql',
-                'NAME': 'messager',
-                'USER': 'nati',
-                'PASSWORD': 'nati7995',
-                'HOST': 'localhost',
-                'PORT': '',
-                'CHARSET': 'utf8',
-                'COLLATION': 'utf8_general_ci',
+                'ENGINE': config.get('DATABASE', 'ENGINE'),
+                'NAME': config.get('DATABASE', 'NAME'),
+                'USER': config.get('DATABASE', 'USER'),
+                'PASSWORD': config.get('DATABASE', 'PASSWORD'),
+                'HOST': config.get('DATABASE', 'HOST'),
+                'PORT': config.get('DATABASE', 'PORT'),
+                'CHARSET': config.get('DATABASE', 'CHARSET'),
+                'COLLATION': config.get('DATABASE', 'COLLATION'),
             }
 }
 
