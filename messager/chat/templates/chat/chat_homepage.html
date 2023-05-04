@@ -146,8 +146,7 @@
                       </div>      
                       <div class="col-md-2">
                         <input type="submit" class="btn btn-secondary btn-md" value="Send" id="sendbtn">  
-                      </div>
-                        
+                      </div>            
                     </div>
                     </div>
               </form>
@@ -280,7 +279,6 @@
         inputs[field.name] = field.value;
         })
       //  alert(inputs.detail)
-
       const data = new FormData()
       data.append('action', inputs.action)
       data.append('editid', inputs.postid)
@@ -296,7 +294,6 @@
                        alert(`Error: ${err}`, 'message send error')
                   });  
     })
-  
   });
 </script>
 {%endblock%}

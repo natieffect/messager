@@ -10,7 +10,7 @@ def chat_homepage(request):
     hadle = hadler.ChatHandler()
     context = {}
     if request.method == "POST":
-        hadle.setmessage = True
+        hadle.setmessage = False
         if request.POST['action']=="sendmessage":
             #hadle.setmessage = True
             request,client = hadle.send_message(request)
@@ -36,8 +36,7 @@ def chat_homepage(request):
 def chat_deletemessage(request):
     hadle = hadler.ChatHandler()
     if request.method == "POST":
-        # print(request.POST['deleteid'])
-        hadle.setmessage = True
+        hadle.setmessage = False
         request, success = hadle.delete_message(request)
         data = {'success': success}
         return JsonResponse(data)
